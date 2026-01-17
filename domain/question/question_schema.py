@@ -24,3 +24,7 @@ class QuestionCreate(BaseModel):
         if not v or not v.strip():
             raise ValueError("Empty content not allowed")
         return v
+
+class QuestionList(BaseModel):
+    total:int = 0
+    question_list:list[Question] = []
