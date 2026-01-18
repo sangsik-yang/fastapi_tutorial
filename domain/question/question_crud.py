@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from models import Question
+from models import Question, User
 from sqlalchemy.orm import Session
 from domain.question.question_schema import QuestionCreate
 
@@ -17,9 +17,10 @@ def get_question(db:Session, question_id:int):
     question = db.query(Question).get(question_id)
     return question
 
-def create_question(db: Session, question_create: QuestionCreate):
+def create_question(db: Session, question_create: QuestionCreate, user:User):
     db_question = Question(subject=question_create.subject,
                            content=question_create.content,
-                           create_date=datetime.now())
+                           create_date=datetime.now(),
+                           user=user)
     db.add(db_question)
     db.commit()
