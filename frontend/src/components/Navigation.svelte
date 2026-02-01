@@ -1,11 +1,11 @@
 <script>
     import { link } from 'svelte-spa-router'
-    import { page, access_token, username, is_login } from '../lib/store'
+    import { page, keyword, access_token, username, is_login } from '../lib/store'
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light-bg border-bottom">
     <div class="container-fluid">
-        <a use:link class="navbar-brand" href="/" on:click="{()=>{$page=0}}">MyBBS</a>
+        <a use:link class="navbar-brand" href="/" on:click="{()=>{$keyword='', $page=0}}">MyBBS</a>
         <button
             class="navbar-toggler"
             type="button"
