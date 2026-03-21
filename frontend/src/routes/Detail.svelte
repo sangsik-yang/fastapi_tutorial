@@ -86,6 +86,10 @@
         }
     }
 
+    function manageTags(_question_id) {
+        push('/question-modify/' + _question_id)
+    }
+
     function vote_answer(_answer_id) {
         if (window.confirm('정말로 추천하시겠습니까?')) {
             let url = "/api/answer/vote"
@@ -108,6 +112,15 @@
     <div class="card my-3">
         <div class="card-body">
             <div class="card-text">{@html marked.parse(question.content)}</div>
+            
+            {#if question.tags && question.tags.length > 0}
+            <div class="mt-3">
+                {#each question.tags as tag}
+                <span class="badge bg-secondary me-1">{tag.name}</span>
+                {/each}
+            </div>
+            {/if}
+
             <div class="d-flex justify-content-end">
                 {#if question.modify_date}
                 <div class="badge bg-light text-dark p-2 text-start mx-3">

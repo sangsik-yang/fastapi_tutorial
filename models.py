@@ -9,8 +9,23 @@ question_voter = Table(
     "question_voter",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("user.id"), primary_key=True),
-    Column("question_id", Integer, ForeignKey("question.id"), primary_key=True)
+    Column("question_id", Integer, ForeignKey("question.id"), primary_key=True),
 )
+
+tag_question = Table(
+    "question_tag",
+    Base.metadata,
+    Column("question_id", Integer, ForeignKey("question.id"), primary_key=True),
+    Column("tag_id", Integer, ForeignKey("tag.id"), primary_key=True),
+)
+
+
+class Tag(Base):
+    __tablename__ = "tag"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+
 
 class Question(Base):
     __tablename__ = "question"
@@ -22,13 +37,15 @@ class Question(Base):
     user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     user = relationship("User", backref="question_users")
     modify_date = Column(DateTime, nullable=True)
-    voter = relationship("User", secondary=question_voter ,backref="question_voters")
+    voter = relationship("User", secondary=question_voter, backref="question_voters")
+    tags = relationship("Tag", secondary=tag_question, backref="questions")
+
 
 answer_voter = Table(
-    'answer_voter',
+    "answer_voter",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("user.id"), primary_key=True),
-    Column("answer_id", Integer, ForeignKey("answer.id"), primary_key=True)
+    Column("answer_id", Integer, ForeignKey("answer.id"), primary_key=True),
 )
 
 
@@ -39,12 +56,11 @@ class Answer(Base):
     content = Column(Text, nullable=False)
     create_date = Column(DateTime, nullable=False)
     question_id = Column(Integer, ForeignKey("question.id"))
-    question = relationship("Question",backref="answers")
-    user_id = Column(Integer, ForeignKey("user.id"),nullable=True)
+    question = relationship("Question", backref="answers")
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     user = relationship("User", backref="answer_users")
     modify_date = Column(DateTime, nullable=True)
-    voter = relationship("User", secondary=answer_voter ,backref="answer_voters")
-
+    voter = relationship("User", secondary=answer_voter, backref="answer_voters")
 
 
 class User(Base):

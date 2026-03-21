@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from models import Question, User, Answer
+from models import Question, User, Answer, Tag
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from domain.question.question_schema import QuestionCreate, QuestionUpdate
@@ -36,6 +36,9 @@ def create_question(db: Session, question_create: QuestionCreate, user:User):
                            content=question_create.content,
                            create_date=datetime.now(),
                            user=user)
+    if question_create.tag_ids:
+        tags = db.query(Tag).filter(Tag.id.in_(question_create.tag_ids)).all()
+        db_question.tags = tags
     db.add(db_question)
     db.commit()
 
@@ -44,6 +47,9 @@ def update_question(db: Session, db_question: Question,
     db_question.subject = question_update.subject
     db_question.content = question_update.content
     db_question.modify_date = datetime.now()
+    if question_update.tag_ids is not None:
+        tags = db.query(Tag).filter(Tag.id.in_(question_update.tag_ids)).all()
+        db_question.tags = tags
     db.add(db_question)
     db.commit()
 

@@ -59,6 +59,13 @@
         {#if question.answers.length >0}
         <span class="text-danger small mx-2">{question.answers.length}</span>
         {/if}
+        {#if question.tags && question.tags.length > 0}
+        <div class="mt-1">
+          {#each question.tags as tag}
+          <span class="badge bg-secondary me-1" style="font-size: 0.7em;">{tag.name}</span>
+          {/each}
+        </div>
+        {/if}
       </td>
       <td>{ question.user ? question.user.username : ""}</td>
       <td>{moment(question.create_date).format("YYYY년 MM월 DD일 hh:mm a")}</td>

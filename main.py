@@ -5,12 +5,16 @@ from starlette.staticfiles import StaticFiles
 
 from domain.answer import answer_router
 from domain.question import question_router
+from domain.tag import tag_router
 from domain.user import user_router
 
 app = FastAPI()
 
 origins = [
     "http://localhost:8000",
+    "http://localhost:5173",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:5173",
 ]
 
 app.add_middleware(
@@ -23,9 +27,10 @@ app.add_middleware(
 
 app.include_router(question_router.router)
 app.include_router(answer_router.router)
+app.include_router(tag_router.router)
 app.include_router(user_router.router)
-app.mount("/assets",
-          StaticFiles(directory="frontend/dist/assets"))
+app.mount("/assets", StaticFiles(directory="frontend/dist/assets"))
+
 
 @app.get("/")
 def index():
