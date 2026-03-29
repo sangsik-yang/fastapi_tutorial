@@ -1,6 +1,6 @@
 import datetime
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 
 from domain.answer.answer_schema import Answer
 from domain.user.user_schema import User
@@ -10,8 +10,7 @@ class Tag(BaseModel):
     id: int
     name: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Question(BaseModel):
@@ -25,8 +24,7 @@ class Question(BaseModel):
     voter: list[User] = []
     tags: list[Tag] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class QuestionCreate(BaseModel):

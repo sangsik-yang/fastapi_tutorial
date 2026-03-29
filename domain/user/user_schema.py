@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator, EmailStr
+from pydantic import BaseModel, field_validator, EmailStr, ConfigDict
 from pydantic_core.core_schema import FieldValidationInfo
 
 
@@ -29,5 +29,4 @@ class User(BaseModel):
     username: str
     email: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

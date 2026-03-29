@@ -21,9 +21,17 @@
 - **API 응답 개선**: 태그 생성 API가 생성된 객체를 즉시 반환(201 Created)하도록 하여 프론트엔드와 실시간으로 동기화되게 했습니다.
 - **Svelte Store 접근 수정**: `$store` 문법을 사용하여 비표준적인 `.get()` 호출로 인한 런타임 에러를 해결했습니다.
 
+### 4. Pydantic v2 마이그레이션 완료 (2026-03-29)
+- **ConfigDict 도입**: 모든 스키마에서 기존 `class Config: orm_mode = True` 방식을 Pydantic v2 표준인 `model_config = ConfigDict(from_attributes=True)`로 업데이트하여 경고 메시지를 제거하고 성능을 최적화했습니다.
+
+### 5. 답변 댓글(Comment) 시스템 구현 (2026-03-29)
+- **백엔드 완결**: `Comment` 모델 설계, Alembic 마이그레이션, CRUD 로직 및 Router 연동을 완료했습니다.
+- **프론트엔드 연동**: 질문 상세 페이지(`Detail.svelte`)에서 답변별 댓글 목록 표시 및 실시간 등록/삭제 UI를 구현했습니다.
+- **검증 완료**: `curl`을 통한 백엔드 API 테스트(생성, 조회, 수정, 삭제)를 수행하여 기능의 안정성을 확인했습니다.
+
 ## 🛠️ 개발 지침 (Project Standards)
 - **가상환경**: `.venv` 내의 `python` 및 `uvicorn`을 명시적으로 사용해야 합니다.
-- **Pydantic v2**: `orm_mode = True` 대신 `from_attributes = True` 권장 경고가 발생하므로 향후 리팩토링 시 참고합니다.
+- **Pydantic v2**: `model_config = ConfigDict(from_attributes=True)`를 사용하여 ORM 모델과의 호환성을 유지합니다.
 - **API 응답**: 모든 성공적인 JSON 응답은 `api.js`의 콜백을 통해 프론트엔드 상태로 즉시 반영되어야 합니다.
 
 ---

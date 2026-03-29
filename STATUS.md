@@ -13,14 +13,13 @@
 ## 3. Current Implementation Status
 - **User Management**: 회원가입, 로그인 (JWT) 완료
 - **Q&A System**: 질문/답변 CRUD, 추천(Vote) 기능 완료
-- **Search System**: 제목, 내용, 글쓴이, 답변 내용을 포함한 통합 검색 기능 완료
-- **Tag System (NEW)**: 
-    - 태그 생성, 목록 조회, 질문-태그 연동 기능 완료
-    - 질문 등록/수정 시 실시간 태그 추가 및 다중 선택 UI 적용
+- **Comment System (NEW)**: 답변에 대한 댓글 작성, 조회, 삭제 기능 완료
+- **Search System**: 통합 검색 기능 완료
+- **Tag System**: 질문-태그 연동 및 인라인 태그 UI 완료
 - **Infrastructure**:
     - CORS 설정 (`localhost:5173`, `127.0.0.1:5173`) 완료
-    - Alembic 마이그레이션 헤드 병합 및 DB 스키마 최신화 완료
+    - Alembic 마이그레이션 및 DB 스키마 최신화 완료 (Comment 테이블 포함)
 
 ## 4. Known Issues & Notes
-- Pydantic v2 사용으로 인해 `orm_mode = True`에 대한 경고 발생 (향후 `from_attributes = True`로 리팩토링 권장)
+- Pydantic v2 마이그레이션 완료: `from_attributes = True`를 적용하여 ORM 모델 호환성 및 성능을 최적화했습니다.
 - 서버 실행 시 가상환경(`.venv`)의 바이너리를 직접 사용하는 것이 안정적임

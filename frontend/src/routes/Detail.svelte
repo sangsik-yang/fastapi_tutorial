@@ -98,10 +98,39 @@
             }
             fastapi('post', url, params, (json) => {
                 get_question()
-                },
-                (err_json) => {
-                    error = err_json
-                })
+            },
+            (err_json) => {
+                error = err_json
+            })
+        }
+    }
+
+    function post_comment(answer_id, comment_content) {
+        if (!comment_content || !comment_content.trim()) {
+            alert('댓글 내용을 입력해주세요.')
+            return
+        }
+        let url = "/api/comment/create/" + answer_id
+        let params = {
+            content: comment_content
+        }
+        fastapi('post', url, params, (json) => {
+            get_question()
+        },
+        (err_json) => {
+            error = err_json
+        })
+    }
+
+    function delete_comment(comment_id) {
+        if (window.confirm('정말로 삭제하시겠습니까?')) {
+            let url = "/api/comment/delete/" + comment_id
+            fastapi('delete', url, {}, (json) => {
+                get_question()
+            },
+            (err_json) => {
+                error = err_json
+            })
         }
     }
 
@@ -169,6 +198,38 @@
                 <button class="btn btn-sm btn-outline-secondary" on:click={() => delete_answer(answer.id)}>삭제</button>
                 {/if}
             </div>
+            
+            <!-- 답변 댓글 -->
+            {#if answer.comments && answer.comments.length > 0}
+            <div class="mt-3">
+                {#each answer.comments as comment}
+                <div class="comment py-2 text-muted border-top">
+                    <span style="white-space: pre-line;">{comment.content}</span>
+                    <span>
+                        - {comment.user ? comment.user.username : ""}, {moment(comment.create_date).format("YYYY-MM-DD hh:mm a")}
+                        {#if comment.modify_date}
+                        (수정: {moment(comment.modify_date).format("YYYY-MM-DD hh:mm a")})
+                        {/if}
+                    </span>
+                    {#if comment.user && $username === comment.user.username}
+                    <button class="btn btn-sm btn-outline-secondary py-0" on:click={() => delete_comment(comment.id)}>삭제</button>
+                    {/if}
+                </div>
+                {/each}
+            </div>
+            {/if}
+            {#if $is_login}
+            <div class="mt-3">
+                <div class="input-group">
+                    <textarea class="form-control" rows="1" id="comment_{answer.id}"></textarea>
+                    <button class="btn btn-outline-secondary" type="button" on:click={() => {
+                        const el = document.getElementById('comment_' + answer.id);
+                        post_comment(answer.id, el.value);
+                        el.value = '';
+                    }}>댓글등록</button>
+                </div>
+            </div>
+            {/if}
         </div>
     </div>
     {/each}

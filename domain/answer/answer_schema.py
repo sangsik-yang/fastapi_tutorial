@@ -1,8 +1,8 @@
 import datetime
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 from domain.user.user_schema import User
-
+from domain.comment.comment_schema import Comment
 
 class AnswerCreate(BaseModel):
     content:str
@@ -21,9 +21,10 @@ class Answer(BaseModel):
     question_id: int
     modify_date: datetime.datetime | None
     voter: list[User] = []
+    comments: list[Comment] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
+
 
 class AnswerUpdate(AnswerCreate):
     answer_id: int
