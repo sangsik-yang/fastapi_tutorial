@@ -86,10 +86,10 @@
             <textarea id="content" class="form-control" rows="10" bind:value="{content}"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label class="fw-bold">태그 선택:</label>
+        <fieldset class="mb-3">
+            <legend class="fw-bold fs-6">태그 선택:</legend>
             <div class="input-group mb-2" style="max-width: 300px;">
-                <input type="text" class="form-control form-control-sm" placeholder="새 태그 이름" bind:value={new_tag_name} on:keydown={(e) => e.key === 'Enter' && (e.preventDefault(), create_tag())}>
+                <input type="text" id="new-tag-name" class="form-control form-control-sm" aria-label="새 태그 이름" placeholder="새 태그 이름" bind:value={new_tag_name} on:keydown={(e) => e.key === 'Enter' && (e.preventDefault(), create_tag())}>
                 <button class="btn btn-outline-secondary btn-sm" type="button" on:click={create_tag}>추가</button>
             </div>
             {#if all_tags.length === 0}
@@ -107,7 +107,7 @@
                     </label>
                 {/each}
             {/if}
-        </div>
+        </fieldset>
 
         <button class="btn btn-primary" on:click="{update_question}">수정하기</button>
     </form>

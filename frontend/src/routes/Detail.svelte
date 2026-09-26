@@ -4,6 +4,7 @@
     import { link, push } from 'svelte-spa-router'
     import { is_login, username } from "../lib/store"
     import { marked } from 'marked'
+    import DOMPurify from 'dompurify'
     import moment from 'moment/min/moment-with-locales'
     moment.locale('ko')
 
@@ -13,6 +14,10 @@
     let question = {answers:[], voter:[], content: ''}
     let content = ""
     let error = {detail:[]}
+
+    function renderMarkdown(markdown) {
+        return DOMPurify.sanitize(marked.parse(markdown || ''))
+    }
 
     function get_question() {
         fastapi("get", "/api/question/detail/" + question_id, {}, (json) => {
@@ -140,7 +145,7 @@
     <h2 class="border-bottom py-2">{question.subject}</h2>
     <div class="card my-3">
         <div class="card-body">
-            <div class="card-text">{@html marked.parse(question.content)}</div>
+            <div class="card-text">{@html renderMarkdown(question.content)}</div>
             
             {#if question.tags && question.tags.length > 0}
             <div class="mt-3">
@@ -177,8 +182,8 @@
     <h5 class="border-bottom my-3 py-2">{question.answers.length}개의 답변이 있습니다.</h5>
     {#each question.answers as answer}
     <div class="card my-3">
-        <div class="card body">
-            <div class="card-text">{@html marked.parse(answer.content)}</div>
+        <div class="card-body">
+            <div class="card-text">{@html renderMarkdown(answer.content)}</div>
             <div class="d-flex justify-content-end">
                 {#if answer.modify_date}
                 <div class="badge bg-light text-dark p-2 text-start mx-3">
